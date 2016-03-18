@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content='width=device-width, initial-scale=0.5' name='viewport'/>
+</head>
+<title>Project 1</title>
+<body style="font-family: sans-serif;">
+<!-- creating a form -->
+<form style="border: 1px solid black; text-align:center; padding:20px; border-radius:5px;" id="table_form">
+<!-- Table for properly alligning -->
+<table style="text-align: left;">
+	<tr><td><strong>Length of table top </strong></td><td></td><td><input type="text" value=""/>mm<br/></td></tr>
+	<tr><td><strong>Breadth of table top </strong></td><td></td><td><input type="text" value=""/>mm<br/></td></tr>
+	<tr><td><strong>Height of table top </strong></td><td></td><td><input type="text" value=""/>mm<br/></td></tr>
+	<tr><td><strong>Height of legs </strong></td><td></td><td><input type="text" value=""/>mm<br/></td></tr>
+	<tr><td><strong>Width of legs </strong></td><td></td><td><input type="text" value=""/>mm<br/></td></tr>
+	<tr><td><strong>Length of Legs </strong></td><td></td><td><input type="text" value=""/>mm<br/></td></tr>
+	<tr><td><button style="height:40px; width:150px; color:white; background:#f1601d; border:none; border-radius:5px;" type="button" onclick="draw()"><strong>CLICK TO DRAW</strong></button>
+	</td><td><a href="direct.html"><button type="button" onclick="reset()" style="height:40px; width:150px; color:white;background:#f1601d;border:none;border-radius:5px;"><strong>RESET</strong></button></a></td></tr>
+	</table>
+</form><br/>
+<div style="text-align: center;">
+<h1>Top View</h1>
+<canvas id="canvas_topview" width="600" height="450" style="border:1px solid black;border-radius:5px; ">
+</canvas>
+<h1>Front View</h1>
+<canvas id="canvas_sideview1" width="600" height="450" style="border:1px solid black;border-radius:5px; ">
+</canvas>
+<h1>Bottom View</h1>
+<canvas id="canvas_bottomview" width="600" height="450" style="border:1px solid black;border-radius:5px; ">
+</canvas>
+<h1>Side View</h1>
+<canvas id="canvas_sideview2" width="600" height="450" style="border:1px solid black;border-radius:5px; ">
+</canvas>
+</div>
+<script type="text/javascript">
+	function draw(){
+		var form=document.getElementById("table_form");
+		var x=form.elements;
+		var len_table_top=parseInt(form.elements[0].value);
+		var bre_table_top=parseInt(form.elements[1].value);
+		var height_table_top=parseInt(form.elements[2].value);
+		var height_table_legs=parseInt(form.elements[3].value);
+		var wid_table_legs=parseInt(form.elements[4].value);
+		var len_table_bot=parseInt(form.elements[5].value);
+			var canvas1=document.getElementById("canvas_topview");
+			var context1 = canvas1.getContext("2d");
+			var i=10;
+			context1.beginPath();
+			context1.moveTo(i,i);
+			context1.lineTo(len_table_top+i,i);
+			context1.lineTo(len_table_top+i,bre_table_top+i);
+			context1.lineTo(i,bre_table_top+i);
+			context1.closePath();
+			context1.stroke();
+			var canvas2 = document.getElementById("canvas_sideview1");
+			var context2 = canvas2.getContext("2d");
+			context2.beginPath();
+			context2.moveTo(i,i);
+			context2.lineTo(len_table_top+i,i);
+			//alert(len_table_top+i);
+			context2.lineTo(len_table_top+i,height_table_top+i);
+			context2.lineTo(i,height_table_top+i);
+			context2.closePath();
+			var bythree = len_table_top/5;
+			//alert(bythree);
+			context2.moveTo(bythree+i,height_table_top+i);
+			context2.lineTo(bythree+i,height_table_top+i+height_table_legs);
+			context2.lineTo(bythree+i+len_table_bot,height_table_top+i+height_table_legs);
+			context2.lineTo(bythree+i+len_table_bot,height_table_top+i);
+			var secleg = 4*bythree;
+			context2.moveTo(secleg+i,height_table_top+i);
+			context2.lineTo(secleg+i,height_table_top+i+height_table_legs);
+			context2.lineTo(secleg+i-len_table_bot,height_table_top+i+height_table_legs);
+			context2.lineTo(secleg+i-len_table_bot,height_table_top+i);
+			context2.stroke();
+			var canvas3=document.getElementById("canvas_bottomview");
+			var context3 = canvas3.getContext("2d");
+			context3.beginPath();
+			context3.moveTo(i,i);
+			context3.lineTo(len_table_top+i,i);
+			context3.lineTo(len_table_top+i,bre_table_top+i);
+			context3.lineTo(i,bre_table_top+i);
+			context3.closePath();
+			var brebyfive = bre_table_top/5;
+			var breintofour = 4*brebyfive;
+			context3.moveTo(i+bythree,i+brebyfive);
+			context3.lineTo(i+bythree+len_table_bot,i+brebyfive);
+			context3.lineTo(i+bythree+len_table_bot,i+brebyfive+wid_table_legs);
+			context3.lineTo(i+bythree,i+brebyfive+wid_table_legs);
+			context3.closePath();
+			context3.moveTo(i+secleg,i+brebyfive);
+			context3.lineTo(i+secleg-len_table_bot,i+brebyfive);
+			context3.lineTo(i+secleg-len_table_bot,i+brebyfive+wid_table_legs);
+			context3.lineTo(i+secleg,i+brebyfive+wid_table_legs);
+			context3.closePath();
+			context3.moveTo(i+bythree,i+breintofour);
+			context3.lineTo(i+bythree+len_table_bot,i+breintofour);
+			context3.lineTo(i+bythree+len_table_bot,i+breintofour-wid_table_legs);
+			context3.lineTo(i+bythree,i+breintofour-wid_table_legs);
+			context3.closePath();
+			context3.moveTo(i+secleg,i+breintofour);
+			context3.lineTo(i+secleg-len_table_bot,i+breintofour);
+			context3.lineTo(i+secleg-len_table_bot,i+breintofour-wid_table_legs);
+			context3.lineTo(i+secleg,i+breintofour-wid_table_legs);
+			context3.closePath();
+			context3.stroke();
+			var canvas4 = document.getElementById("canvas_sideview2");
+			var context4 = canvas4.getContext("2d");
+			context4.beginPath();
+			context4.moveTo(i,i);
+			context4.lineTo(bre_table_top+i,i);
+			context4.lineTo(bre_table_top+i,height_table_top+i);
+			context4.lineTo(i,height_table_top+i);
+			context4.closePath();
+			context4.moveTo(brebyfive+i,height_table_top+i);
+			context4.lineTo(brebyfive+i,height_table_top+i+height_table_legs);
+			context4.lineTo(brebyfive+i+wid_table_legs,height_table_top+i+height_table_legs);
+			context4.lineTo(brebyfive+i+wid_table_legs,height_table_top+i);
+			context4.moveTo(breintofour+i,height_table_top+i);
+			context4.lineTo(breintofour+i,height_table_top+i+height_table_legs);
+			context4.lineTo(breintofour+i-wid_table_legs,height_table_top+i+height_table_legs);
+			context4.lineTo(breintofour+i-wid_table_legs,height_table_top+i);
+			context4.stroke();
+		}
+</script>
+</body>
+
+</html>
