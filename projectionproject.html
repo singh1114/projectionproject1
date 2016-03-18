@@ -10,71 +10,77 @@
 <form style="border: 1px solid black; text-align:center; padding:20px; border-radius:5px;" id="table_form">
 <!-- Table for properly alligning -->
 <table style="text-align: left;">
+	<!--creating rows and column <td></td> is used to leave a column in between empty-->
 	<tr><td><strong>Length of table top </strong></td><td></td><td><input type="text" value=""/>mm<br/></td></tr>
 	<tr><td><strong>Breadth of table top </strong></td><td></td><td><input type="text" value=""/>mm<br/></td></tr>
-	<tr><td><strong>Height of table top </strong></td><td></td><td><input type="text" value=""/>mm<br/></td></tr>
+	<tr><td><strong>Thickness of table top </strong></td><td></td><td><input type="text" value=""/>mm<br/></td></tr>
 	<tr><td><strong>Height of legs </strong></td><td></td><td><input type="text" value=""/>mm<br/></td></tr>
 	<tr><td><strong>Width of legs </strong></td><td></td><td><input type="text" value=""/>mm<br/></td></tr>
-	<tr><td><strong>Length of Legs </strong></td><td></td><td><input type="text" value=""/>mm<br/></td></tr>
+	<tr><td><strong>Thickness of Legs </strong></td><td></td><td><input type="text" value=""/>mm<br/></td></tr>
 	<tr><td><button style="height:40px; width:150px; color:white; background:#f1601d; border:none; border-radius:5px;" type="button" onclick="draw()"><strong>CLICK TO DRAW</strong></button>
 	</td><td><a href="direct.html"><button type="button" onclick="reset()" style="height:40px; width:150px; color:white;background:#f1601d;border:none;border-radius:5px;"><strong>RESET</strong></button></a></td></tr>
 	</table>
 </form><br/>
 <div style="text-align: center;">
+	<!--top view canvas-->
 <h1>Top View</h1>
 <canvas id="canvas_topview" width="600" height="450" style="border:1px solid black;border-radius:5px; ">
 </canvas>
+	<!--front view canvas-->
 <h1>Front View</h1>
 <canvas id="canvas_sideview1" width="600" height="450" style="border:1px solid black;border-radius:5px; ">
 </canvas>
+	<!--bottom view canvas-->
 <h1>Bottom View</h1>
 <canvas id="canvas_bottomview" width="600" height="450" style="border:1px solid black;border-radius:5px; ">
 </canvas>
+	<!--side view canvas-->
 <h1>Side View</h1>
 <canvas id="canvas_sideview2" width="600" height="450" style="border:1px solid black;border-radius:5px; ">
 </canvas>
 </div>
 <script type="text/javascript">
 	function draw(){
+		//form object is created all the values of form are now in this object.
 		var form=document.getElementById("table_form");
-		var x=form.elements;
-		var len_table_top=parseInt(form.elements[0].value);
+		var x=form.elements; //x now contains all the elements(basically inputs) of the form object
+		var len_table_top=parseInt(form.elements[0].value); //explicitely converted to int type(very important)
 		var bre_table_top=parseInt(form.elements[1].value);
 		var height_table_top=parseInt(form.elements[2].value);
 		var height_table_legs=parseInt(form.elements[3].value);
 		var wid_table_legs=parseInt(form.elements[4].value);
 		var len_table_bot=parseInt(form.elements[5].value);
-			var canvas1=document.getElementById("canvas_topview");
-			var context1 = canvas1.getContext("2d");
-			var i=10;
-			context1.beginPath();
-			context1.moveTo(i,i);
-			context1.lineTo(len_table_top+i,i);
+			var canvas1=document.getElementById("canvas_topview");  //object of canvas is created by making use id
+			var context1 = canvas1.getContext("2d");// this tells that we are going to make 2d pictures.
+			var i=10; //variable to leave some distance in the sides of the drawing.
+			context1.beginPath();// start the path
+			context1.moveTo(i,i);//move to(10,10) without drawing anything
+			context1.lineTo(len_table_top+i,i);//make a line from the earlier point to the given point.
 			context1.lineTo(len_table_top+i,bre_table_top+i);
 			context1.lineTo(i,bre_table_top+i);
-			context1.closePath();
-			context1.stroke();
+			context1.closePath();//close the curve.
+			context1.stroke();//only create the edges. fill can be used to fill the color inside
+			
 			var canvas2 = document.getElementById("canvas_sideview1");
 			var context2 = canvas2.getContext("2d");
 			context2.beginPath();
 			context2.moveTo(i,i);
 			context2.lineTo(len_table_top+i,i);
-			//alert(len_table_top+i);
 			context2.lineTo(len_table_top+i,height_table_top+i);
 			context2.lineTo(i,height_table_top+i);
 			context2.closePath();
-			var bythree = len_table_top/5;
-			//alert(bythree);
+			var bythree = len_table_top/5;//divide the length to five parts and leave 1-1 parts in the end and the beggining
 			context2.moveTo(bythree+i,height_table_top+i);
 			context2.lineTo(bythree+i,height_table_top+i+height_table_legs);
 			context2.lineTo(bythree+i+len_table_bot,height_table_top+i+height_table_legs);
 			context2.lineTo(bythree+i+len_table_bot,height_table_top+i);
-			var secleg = 4*bythree;
+			var secleg = 4*bythree;//leaving space from the end
 			context2.moveTo(secleg+i,height_table_top+i);
 			context2.lineTo(secleg+i,height_table_top+i+height_table_legs);
 			context2.lineTo(secleg+i-len_table_bot,height_table_top+i+height_table_legs);
 			context2.lineTo(secleg+i-len_table_bot,height_table_top+i);
 			context2.stroke();
+			
 			var canvas3=document.getElementById("canvas_bottomview");
 			var context3 = canvas3.getContext("2d");
 			context3.beginPath();
@@ -83,7 +89,7 @@
 			context3.lineTo(len_table_top+i,bre_table_top+i);
 			context3.lineTo(i,bre_table_top+i);
 			context3.closePath();
-			var brebyfive = bre_table_top/5;
+			var brebyfive = bre_table_top/5;//divide the breadth too in five parts.
 			var breintofour = 4*brebyfive;
 			context3.moveTo(i+bythree,i+brebyfive);
 			context3.lineTo(i+bythree+len_table_bot,i+brebyfive);
@@ -106,6 +112,7 @@
 			context3.lineTo(i+secleg,i+breintofour-wid_table_legs);
 			context3.closePath();
 			context3.stroke();
+			
 			var canvas4 = document.getElementById("canvas_sideview2");
 			var context4 = canvas4.getContext("2d");
 			context4.beginPath();
