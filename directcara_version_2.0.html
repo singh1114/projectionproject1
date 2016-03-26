@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content='width=device-width, initial-scale=0.5' name='viewport'/>
+</head>
+<title>Project 1</title>
+<body>
+	<div id="getvalue" style="border: 1px solid black; margin-bottom:15px;padding: 10px;">
+		<strong >Give the values</strong><br/><br/>
+		<strong id="text_change">LENGTH OF TABLE</strong>
+		<input type="text" />
+		<input type="text" />
+		<input type="text" />
+		<input type="text" />
+		<input type="text" />
+		<input type="text" />
+		<button type="button" onclick="getvalues()">Values</button>
+	</div>
+	<div id="all_canvas">
+		<canvas id="canvas1" width="600" height="450" style="border:1px solid black;border-radius:5px; ">
+		</canvas>
+		<button type="button" id="button" value="click me" onclick="executethis()">SHOW TOP VIEW</button>
+	</div>
+	<script type="text/javascript">
+		var form=document.getElementById("getvalue").querySelectorAll("input");
+		var getvaluesvar; // for getvalues function
+		var values = new Array(6); //for getvalues function
+		var canvas = document.getElementById("canvas1");
+		var context = canvas.getContext("2d");
+		var i = 10, length_legs, length_legs_dist;
+		var a;
+		var b;
+		var legs_even;
+		var count=0;
+		for(getvaluesvar=1;getvaluesvar<6;getvaluesvar++){
+			form[getvaluesvar].style.display = "none";
+		}
+		getvaluesvar=0;
+		function getvalues(){
+			if(form[getvaluesvar].value !="" && form[getvaluesvar].value !=0){
+				if(getvaluesvar < 6){
+					values[getvaluesvar]=parseInt(form[getvaluesvar].value);
+					//alert(values[getvaluesvar]);
+					getvaluesvar++;
+					show(getvaluesvar);
+					reset(getvaluesvar);
+				}
+			}
+			else{
+				alert("the values must not be empty or zero");
+			}
+		}
+		function show(x){
+			form[x].style.display = "inline";
+			form[x-1].style.display="none";	
+		}
+		function reset(x){
+			if(x==1){document.getElementById("text_change").innerHTML = "BREADTH OF TABLE";}
+			else if(x==2){document.getElementById("text_change").innerHTML = "THICKNESS OF TABLE";}
+			else if(x==3){document.getElementById("text_change").innerHTML = "NUMBER OF LEGS";}
+			else if(x==4){document.getElementById("text_change").innerHTML = "HEIGHT OF LEGS";}
+			else if(x==5){document.getElementById("text_change").innerHTML = "WIDTH OF LEGS";}
+		}
+		function executethis(){
+			canvasclear();
+			if(count==0){
+				maketopview();
+				document.getElementById("button").innerHTML = "SHOW FRONT VIEW";
+			}
+			else if(count == 1){
+				makefrontview();
+				document.getElementById("button").innerHTML = "SHOW SIDE VIEW";
+			}
+			else if(count == 2){
+				makesideview();
+				document.getElementById("button").innerHTML = "SHOW BOTTOM VIEW";
+			}
+			else if(count == 3){
+				makebottomview();
+				document.getElementById("button").innerHTML = "SHOW TOP VIEW";
+				count = -1;
+			}
+			count++;
+		}
+		function canvasclear(){
+			context.clearRect(0,0,600,450);
+		}
+		function maketopview(){
+			context.beginPath();
+			context.moveTo(i,i);
+			context.lineTo(values[0]+i,i);
+			context.lineTo(values[0]+i,values[1]+i);
+			context.lineTo(i,values[1]+i);
+			context.closePath();
+			context.stroke();
+		}
+		function makefrontview(){
+			context.beginPath();
+			context.moveTo(i,i);
+			context.lineTo(values[0]+i,i);
+			context.lineTo(values[0]+i,values[2]+i);
+			context.lineTo(i,values[2]+i);
+			context.closePath();
+			checklengthlegs();
+			a = 1;
+			makelengthleg(values[0]);
+			context.stroke();
+		}
+		function checklengthlegs(){
+			if(values[3]%2==0){
+				length_legs = parseInt(values[3]/2);
+				legs_even = true;
+			}
+			else{
+				length_legs = parseInt(values[3]/2) + 1;
+				legs_even = false;
+			}
+		}
+		function makelengthleg(z){
+			var total = z;
+			length_legs_dist = (total - (length_legs*values[5]))/(length_legs+1);
+			//alert(length_legs_dist);
+			var legs_left = length_legs;
+			for(legs_left;legs_left>0;legs_left--){
+				makealeg();
+			}
+		}
+		function makealeg(){
+			context.moveTo(i+(a*length_legs_dist)+((a-1)*values[5]),i+values[2]);
+			context.lineTo(i+(a*length_legs_dist)+((a-1)*values[5]),i+values[2]+values[4]);
+			context.lineTo(i+(a*length_legs_dist)+((a-1)*values[5])+values[5],i+values[2]+values[4]);
+			context.lineTo(i+(a*length_legs_dist)+((a-1)*values[5])+values[5],i+values[2]);
+			context.closePath();
+			context.stroke();
+			a++;
+		}
+		function makesideview(){
+			checklengthlegs();
+			//alert(Boolean(legs_even));
+			context.beginPath();
+			context.moveTo(i,i);
+			context.lineTo(values[1]+i,i);
+			context.lineTo(values[1]+i,values[2]+i);
+			context.lineTo(i,values[2]+i);
+			context.closePath();
+			a = 1;
+			breadthevencheck();
+			//alert(length_legs);
+			makelengthleg(values[1]);
+		}
+		function  breadthevencheck(){
+			if(legs_even==true){
+				length_legs=2;
+			}
+			else{
+				length_legs=3;
+			}
+		}
+		function makebottomview(){
+			maketopview();
+			checklengthlegs();
+			makeblocks();
+		}
+		function makeblocks(){
+			context.beginPath();
+			length_legs=2;
+			var breadth_empty =  (values[1] - (length_legs*values[5]))/(length_legs+1);
+			checklengthlegs();
+			var length_empty =  (values[0] - (length_legs*values[5]))/(length_legs+1);
+			for(a=1;a<(length_legs+1);a++){
+				for(b=1;b<3;b++){
+					if(legs_even==false && a==length_legs){
+						length_legs=1;
+						breadth_empty = (values[1] - (length_legs*values[5]))/(length_legs+1);
+					}
+					if(length_legs==1 && b==2){
+						continue;
+					}
+						context.moveTo(i+(a*length_empty)+((a-1)*values[5]),i+(b*breadth_empty)+((b-1)*values[5]));
+						context.lineTo(i+(a*length_empty)+((a-1)*values[5]),i+(b*breadth_empty)+((b-1)*values[5])+values[5]);
+						context.lineTo(i+(a*length_empty)+((a-1)*values[5])+values[5],i+(b*breadth_empty)+((b-1)*values[5])+values[5]);
+						context.lineTo(i+(a*length_empty)+((a-1)*values[5])+values[5],i+(b*breadth_empty)+((b-1)*values[5]));
+						context.closePath();
+						context.stroke();
+				}
+			}
+		}
+	</script>
+</body>
+</html>
