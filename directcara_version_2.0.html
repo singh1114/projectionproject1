@@ -15,7 +15,8 @@
 		<input type="text" />
 		<input type="text" />
 		<input type="text" />
-		<button type="button" onclick="getvalues()">Values</button>
+		<button type="button" onclick="getvalues()" id="valuesbutton">Values</button>
+		<button type="button" onclick="valuesreset()" id="resetbutton">RESET VALUES</button>
 	</div>
 	<div id="all_canvas">
 		<canvas id="canvas1" width="600" height="450" style="border:1px solid black;border-radius:5px; ">
@@ -38,6 +39,7 @@
 		for(getvaluesvar=1;getvaluesvar<6;getvaluesvar++){
 			form[getvaluesvar].style.display = "none";
 		}
+		document.getElementById("resetbutton").style.display = "none";
 		getvaluesvar=0; // again initialize getvaluevar to zero
 		function getvalues(){
 			if(form[getvaluesvar].value !="" && form[getvaluesvar].value !=0){
@@ -46,19 +48,37 @@
 					values[getvaluesvar]=parseInt(form[getvaluesvar].value);
 					//parseInt is used to tell te browser that the value must be an Integer only.
 					getvaluesvar++;
-					show(getvaluesvar);// shows next input  bar and changeg the text.
-					reset(getvaluesvar);// reset the input bar.
+					if(getvaluesvar<6){
+						show(getvaluesvar);// shows next input  bar and changeg the text.
+						reset(getvaluesvar);// reset the input bar.
+					}
+				}
+				if(getvaluesvar == 6){
+					document.getElementById("text_change").style.display = "none";
+					form[getvaluesvar-1].style.display = "none";
+					document.getElementById("valuesbutton").style.display = "none";
+					document.getElementById("resetbutton").style.display = "inline";
 				}
 			}
-			//when input is2 empty or zero.
+			//when input is empty or zero.
 			else{
 				alert("the values must not be empty or zero");
 			}
+		}
+		function valuesreset(){
+			getvaluesvar = 0;
+			document.getElementById("text_change").style.display = "inline";
+			document.getElementById("text_change").innerHTML = "LENGTH OF TABLE";
+			form[getvaluesvar].style.display = "inline";
+			form[getvaluesvar].value = " ";
+			document.getElementById("valuesbutton").style.display = "inline";
+			document.getElementById("resetbutton").style.display = "none";
 		}
 		// function to show next input box
 		function show(x){
 			form[x].style.display = "inline";
 			form[x-1].style.display="none";	
+			form[x].value = " ";
 		}
 		// to clear the text in input fields with the help of x
 		function reset(x){
