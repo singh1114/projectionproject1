@@ -7,7 +7,7 @@
 <title>Project 1</title>
 <body>
 	<div id="getvalue" style="border: 1px solid black; margin-bottom:15px;padding: 10px;">
-		<strong id="stored_values">Give the values</strong><br/><br/>
+		<strong >Give the values</strong><br/><br/>
 		<strong id="text_change">LENGTH OF TABLE</strong>
 		<input type="text" />
 		<input type="text" />
@@ -58,7 +58,6 @@
 					form[getvaluesvar-1].style.display = "none";
 					document.getElementById("valuesbutton").style.display = "none";
 					document.getElementById("resetbutton").style.display = "inline";
-					document.getElementById("stored_values").innerHTML = "Values are stored click on the button to reset values";
 				}
 			}
 			//when input is empty or zero.
@@ -72,7 +71,6 @@
 			document.getElementById("text_change").innerHTML = "LENGTH OF TABLE";
 			form[getvaluesvar].style.display = "inline";
 			form[getvaluesvar].value = " ";
-			document.getElementById("stored_values").innerHTML = "Give the values";
 			document.getElementById("valuesbutton").style.display = "inline";
 			document.getElementById("resetbutton").style.display = "none";
 		}
